@@ -12,7 +12,7 @@ public class BlogApiApplication {
 		SpringApplication.run(BlogApiApplication.class, args);
 	}
 	@Bean
-	ModelMapper modelMapper(){
+	public ModelMapper modelMapper(){
 		return new ModelMapper();
 	}
 
