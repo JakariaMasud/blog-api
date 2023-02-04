@@ -11,7 +11,6 @@ import com.example.blogApi.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,22 +43,34 @@ public class PostServiceImpl  implements PostService{
 
     @Override
     public PostDto updatePost(PostDto postDto, Integer postId) {
-        return null;
+        Post post = postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",postId));
+        post.setTitle(postDto.getTitle());
+        post.setContent(postDto.getContent());
+        post.setImage("updated.png");
+        post.setAddedDate(postDto.getAddedDate());
+        Post updatedPost = postRepository.save(post);
+        return modelMapper.map(updatedPost,PostDto.class);
     }
 
     @Override
     public Void deletePost(Integer postId) {
+        Post post = postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",postId));
+        postRepository.delete(post);
         return null;
     }
 
     @Override
     public PostDto getPostById(Integer postId) {
-        return null;
+        Post post = postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post","PostId",postId));
+        PostDto postDto = modelMapper.map(post,PostDto.class);
+        return postDto;
     }
 
     @Override
     public List<PostDto> getAllPosts() {
-        return null;
+        List<Post> posts = postRepository.findAll();
+        List<PostDto> postDtoList = posts.stream().map(post -> modelMapper.map(post,PostDto.class)).collect(Collectors.toList());
+        return postDtoList;
     }
 
     @Override

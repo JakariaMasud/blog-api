@@ -1,8 +1,7 @@
 package com.example.blogApi.controllers;
 
-import com.example.blogApi.entity.Post;
+import com.example.blogApi.payloads.ApiResponse;
 import com.example.blogApi.payloads.PostDto;
-import com.example.blogApi.payloads.UserDto;
 import com.example.blogApi.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +32,28 @@ public class PostController {
         List<PostDto> postDtoList = postService.getPostByCategory(categoryId);
         return new ResponseEntity<>(postDtoList,HttpStatus.OK);
     }
+    @GetMapping("/posts")
+    ResponseEntity<List<PostDto>> getAllPosts(){
+        List<PostDto> postDtoList = postService.getAllPosts();
+        return new ResponseEntity<>(postDtoList,HttpStatus.OK);
+    }
+    @DeleteMapping("/posts/{postId}")
+    ResponseEntity<ApiResponse> deletePost(@PathVariable Integer postId){
+        postService.deletePost(postId);
+        ApiResponse apiResponse = new ApiResponse("Successfully deleted",true);
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+    }
+    @PutMapping("/posts/{postId}")
+    ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,@PathVariable Integer postId){
+        PostDto updatedPost = postService.updatePost(postDto,postId);
+        return new ResponseEntity<>(updatedPost,HttpStatus.OK);
+    }
+    @GetMapping("/posts/{postId}")
+    ResponseEntity<PostDto> getPostById(@PathVariable Integer postId){
+        PostDto postDto = postService.getPostById(postId);
+        return new ResponseEntity<>(postDto,HttpStatus.OK);
+        }
+
 
 
 }
