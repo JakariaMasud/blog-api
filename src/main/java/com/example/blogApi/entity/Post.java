@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -27,4 +29,6 @@ public class Post {
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     private User user;
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    private List<Comment> comments;
 }

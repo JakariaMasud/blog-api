@@ -1,6 +1,7 @@
 package com.example.blogApi.payloads;
 
 import com.example.blogApi.entity.Category;
+import com.example.blogApi.entity.Comment;
 import com.example.blogApi.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -22,4 +24,6 @@ public class PostDto {
     private Date addedDate;
     private CategoryDto category;
     private UserDto user;
+    private List<CommentDto> comments;
+
 }
