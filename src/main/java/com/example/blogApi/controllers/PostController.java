@@ -2,6 +2,7 @@ package com.example.blogApi.controllers;
 
 import com.example.blogApi.payloads.ApiResponse;
 import com.example.blogApi.payloads.PostDto;
+import com.example.blogApi.payloads.PostResponse;
 import com.example.blogApi.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,12 +34,15 @@ public class PostController {
         return new ResponseEntity<>(postDtoList,HttpStatus.OK);
     }
     @GetMapping("/posts")
-    ResponseEntity<List<PostDto>> getAllPosts(
-            @RequestParam(value = "pageNumber",required = false,defaultValue = "1") Integer pageNumber,
-            @RequestParam(value = "pageSize" ,required = false,defaultValue = "3") Integer pageSize)
+    ResponseEntity<PostResponse> getAllPosts(
+            @RequestParam(value = "pageNumber",required = false,defaultValue = "0") Integer pageNumber,
+            @RequestParam(value = "pageSize" ,required = false,defaultValue = "3") Integer pageSize,
+            @RequestParam(value = "sortBy",required = false,defaultValue = "PostId") String sortBy,
+            @RequestParam(value = "sortDir",required = false,defaultValue = "asc") String sortDir
+    )
     {
-        List<PostDto> postDtoList = postService.getAllPosts(pageNumber,pageSize);
-        return new ResponseEntity<>(postDtoList,HttpStatus.OK);
+        PostResponse postResponse = postService.getAllPosts(pageNumber,pageSize,sortBy,sortDir);
+        return new ResponseEntity<>(postResponse,HttpStatus.OK);
     }
     @DeleteMapping("/posts/{postId}")
     ResponseEntity<ApiResponse> deletePost(@PathVariable Integer postId){
@@ -56,7 +60,10 @@ public class PostController {
         PostDto postDto = postService.getPostById(postId);
         return new ResponseEntity<>(postDto,HttpStatus.OK);
         }
-
-
+    @GetMapping("/posts/search/{keyword}")
+    ResponseEntity<List<PostDto>>searchPosts(@PathVariable("keyword") String keyword){
+        List<PostDto> postDtoList = postService.SearchPosts(keyword);
+        return new ResponseEntity<>(postDtoList,HttpStatus.OK);
+    }
 
 }
