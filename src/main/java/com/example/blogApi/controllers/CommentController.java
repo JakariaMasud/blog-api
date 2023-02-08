@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api")
-public class CommentController  {
+public class CommentController {
     @Autowired
     CommentService commentService;
 
     @PostMapping("/posts/{postId}/comments")
     ResponseEntity<CommentDto> addComment(@PathVariable("postId") Integer postId,
-                                          @RequestBody CommentDto commentDto){
-       CommentDto savedComment= commentService.addComment(commentDto,postId);
-       return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
+                                          @RequestBody CommentDto commentDto) {
+        CommentDto savedComment = commentService.addComment(commentDto, postId);
+        return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/comments/{commentId}")
-    ResponseEntity<ApiResponse> deleteComment(@PathVariable Integer commentId){
+    ResponseEntity<ApiResponse> deleteComment(@PathVariable Integer commentId) {
         commentService.deleteComment(commentId);
-        ApiResponse apiResponse = new ApiResponse("successfully deleted",true);
-        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+        ApiResponse apiResponse = new ApiResponse("successfully deleted", true);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
 }

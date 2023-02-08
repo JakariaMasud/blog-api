@@ -16,31 +16,35 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
+
     @PostMapping("/")
-    ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto){
+    ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto) {
         CategoryDto createdCategoryDto = categoryService.createCategory(categoryDto);
         return new ResponseEntity<>(createdCategoryDto, HttpStatus.CREATED);
     }
+
     @PutMapping("/{categoryId}")
-    ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto,@PathVariable Integer categoryId){
-       CategoryDto updatedCategoryDto= categoryService.updateCategory(categoryDto,categoryId);
-       return new ResponseEntity<>(updatedCategoryDto,HttpStatus.OK);
+    ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto, @PathVariable Integer categoryId) {
+        CategoryDto updatedCategoryDto = categoryService.updateCategory(categoryDto, categoryId);
+        return new ResponseEntity<>(updatedCategoryDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{categoryId}")
-    ResponseEntity<Void> deleteCategory(@PathVariable("categoryId") Integer id){
+    ResponseEntity<Void> deleteCategory(@PathVariable("categoryId") Integer id) {
         categoryService.deleteCategory(id);
         return null;
     }
+
     @GetMapping("/{categoryId}")
-    ResponseEntity<CategoryDto> getCategoryById(@PathVariable Integer categoryId){
+    ResponseEntity<CategoryDto> getCategoryById(@PathVariable Integer categoryId) {
         CategoryDto categoryDto = categoryService.getCategoryById(categoryId);
-        return new ResponseEntity<>(categoryDto,HttpStatus.FOUND);
+        return new ResponseEntity<>(categoryDto, HttpStatus.FOUND);
     }
+
     @GetMapping("/")
-    ResponseEntity<List<CategoryDto>> getAllCategory(){
+    ResponseEntity<List<CategoryDto>> getAllCategory() {
         List<CategoryDto> categoryDtoList = categoryService.getCategories();
-        return new ResponseEntity<>(categoryDtoList,HttpStatus.OK);
+        return new ResponseEntity<>(categoryDtoList, HttpStatus.OK);
     }
 
 }

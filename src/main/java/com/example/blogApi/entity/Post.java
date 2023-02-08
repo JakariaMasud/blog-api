@@ -25,10 +25,10 @@ public class Post {
     private Date addedDate;
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
-    private  Category category;
+    private Category category;
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     private User user;
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 }

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class UserDto {
     private Integer id;
     @NotEmpty(message = "name must not be empty")
-    @Size(min = 5,max = 20,message = "Name min size is 5 and max size is 20")
+    @Size(min = 5, max = 20, message = "Name min size is 5 and max size is 20")
     private String name;
     @Email(message = "Email is not valid")
     private String email;
