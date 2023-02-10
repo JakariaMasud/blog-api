@@ -1,33 +1,35 @@
 package com.example.blogApi.config;
 
-import com.example.blogApi.services.CustomUserDetailsService;
+import com.example.blogApi.security.CustomUserDetailsService;
+import com.example.blogApi.security.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+    @Autowired
+    AuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     UserDetailsService userDetailsService(PasswordEncoder passwordEncoder){
-//        UserDetails admin = User.withUsername("jakaria").password(passwordEncoder().encode("1234")).roles("ADMIN").build();
-//        UserDetails user = User.withUsername("saidur").password("1234").roles("NORMAL").build();
-//        return new InMemoryUserDetailsManager(admin,user);
         return new CustomUserDetailsService();
     }
     @Bean
@@ -41,13 +43,17 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/users/**").permitAll()
+                .requestMatchers("/api/users/**","/api/auth/**").permitAll()
                 .and()
                 .authorizeHttpRequests()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -59,6 +65,12 @@ public class SecurityConfiguration {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         return daoAuthenticationProvider;
     }
+    @Bean
+    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+
 
 
 

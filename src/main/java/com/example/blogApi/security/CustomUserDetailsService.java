@@ -1,4 +1,4 @@
-package com.example.blogApi.services;
+package com.example.blogApi.security;
 
 import com.example.blogApi.entity.User;
 import com.example.blogApi.exceptions.ResourceNotFoundException;
