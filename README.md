@@ -1,9 +1,9 @@
 ## Library Management System
 A Spring Boot API Application which Allows Clients to :
-* register,login and logout
-* Read,Create,Update,Delete Post
-* Read,Create,Update,Delete Comment
-* Read,Create,Update,Delete Category of Post
+* Register, Login and Logout
+* Read, Create, Update, Delete Post
+* Read, Create, Update, Delete Comment
+* Read, Create, Update, Delete Category of Post
 * Use Role Based Authentication
 
 
