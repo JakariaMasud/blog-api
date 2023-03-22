@@ -1,5 +1,5 @@
-## Library Management System
-A Spring Boot API Application which Allows Clients to :
+## Blog Application
+A Spring Boot Rest API  which Allows Clients to :
 * Register, Login and Logout
 * Read, Create, Update, Delete Post
 * Read, Create, Update, Delete Comment
@@ -13,4 +13,6 @@ A Spring Boot API Application which Allows Clients to :
 * Spring Data JPA
 * Mysql Database
 * Spring Security
+* Lombok
+* ModelMapper
 * JWT Based Authentication
