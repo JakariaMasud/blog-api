@@ -1,8 +1,11 @@
 package com.example.blogApi.services;
 
+import com.example.blogApi.config.AppConstants;
+import com.example.blogApi.entity.Role;
 import com.example.blogApi.entity.User;
 import com.example.blogApi.exceptions.ResourceNotFoundException;
 import com.example.blogApi.payloads.UserDto;
+import com.example.blogApi.repositories.RoleRepository;
 import com.example.blogApi.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +24,18 @@ public class UserServiceImpl implements UserService {
     private ModelMapper modelMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Override
+    public UserDto registerUser(UserDto userDto) {
+        User user = modelMapper.map(userDto,User.class);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role role = roleRepository.findById(AppConstants.NORMAL_USER).get();
+        user.setRoles(Set.of(role));
+        User savedUser = userRepository.save(user);
+        return modelMapper.map(savedUser,UserDto.class);
+    }
 
     @Override
     public UserDto createUser(UserDto userDto) {
